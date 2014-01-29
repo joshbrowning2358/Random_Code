@@ -1,0 +1,7 @@
+Look up the process id by replacing <program glob> with process name:
+
+ps aux | grep -i <program glob>
+
+Kill it!
+
+kill -9
