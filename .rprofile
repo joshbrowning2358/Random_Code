@@ -1,0 +1,17 @@
+## Don't ask me for my CRAN mirror every time
+options("repos" = c(CRAN = "http://cran.rstudio.com/"))
+
+## Penalize scientific notation:
+options(scipen=20)
+
+## Store the jar file for OJDBC connects
+jarfile = "C:/sqldeveloper/jdbc/lib/ojdbc6.jar"
+
+source_github <- function(u) {
+  # load package
+  require(RCurl)
+
+  # read script lines from website and evaluate
+  script <- getURL(u, followlocation=TRUE, ssl.verifypeer=F)
+  eval(parse(text = script), envir=.GlobalEnv)
+}
