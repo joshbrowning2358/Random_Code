@@ -23,12 +23,18 @@ plotGlm = function(fit){
   filt = coeff$variable!=coeff$groupVariable
   coeff$variable[filt] = paste(coeff$groupVariable, ":", coeff$variable)[filt]
   coeff$variable = factor(coeff$variable, levels=coeff$variable)
+  coeff$lab = formatC(coeff$Estimate, digits=2, format="e")
+  coeff$lab = paste0(coeff$lab, ifelse(coeff$p.value<0.001,"***"
+                               ,ifelse(coeff$p.value<0.01, "**"
+                               ,ifelse(coeff$p.value<0.05, "*"
+                               ,ifelse(coeff$p.value<.1,".","")))))
 
-  p = ggplot(coeff, aes(x=variable) ) +
+  p = 
+    ggplot(coeff, aes(x=variable) ) +
     geom_bar(aes(y=Estimate, fill=Estimate>0), stat="identity") +
     geom_errorbar(aes(ymax=Estimate+2*Std.Error, ymin=Estimate-2*Std.Error), width=.2) +
-    geom_text(aes(x=variable, y=max(abs(coeff$Estimate))*.1*ifelse(Estimate<0,1,-1)
-      ,label=formatC(Estimate, digits=2, format="e") ), vjust=-.6 ) +
+    geom_text(aes(x=variable, y=max(abs(coeff$Estimate))*ifelse(Estimate>0,-.2,.05)
+      ,label=lab ), vjust=-.6, hjust=0 ) +
     coord_flip() + guides(fill=F) + labs(x="", y="Coefficient")
   
   return(p)
