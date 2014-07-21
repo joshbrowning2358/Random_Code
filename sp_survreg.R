@@ -8,12 +8,13 @@
 #fast: Limit the subpopulation proportion to 3 times the initial deaths.  Allows easier optimization of the likelihood
 #  does not ensure a maximum is obtained.
 #dist: The distribution
-#sp_survreg assumes S is ordered (to calculate bounds for the asymptote)
 sp_survreg = function( S, formula="S~1", data=NULL, weight=rep(1,nrow(S)), fast=F
-  ,dist=c("spweibull","sploglogistic","splognormal")[1] ){
+  ,dist=c("spweibull","sploglogistic","splognormal") ){
   
   if(length(dist)>1)
     dist = dist[1]
+  #sp_survreg assumes S is ordered (to calculate bounds for the asymptote)
+  S = S[order(S[,1]),]
 
   #define sp-weibull distribution:
   spweibull<-list(name='SPWeibull',
